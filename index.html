@@ -115,6 +115,46 @@
 
 <hr>
 
+<hr>
+
+<h3>ICT / MOOCs / E-Content / Curriculum</h3>
+
+<select id="ictType">
+  <option value="">Select Activity</option>
+
+  <option value="5">Innovative Pedagogy</option>
+
+  <option value="2">Curriculum Design (per course)</option>
+
+  <option value="20">MOOC Full Course (4 credit)</option>
+  <option value="5">MOOC Module</option>
+  <option value="2">MOOC Content Expert</option>
+  <option value="8">MOOC Course Coordinator</option>
+
+  <option value="12">E-Content Full Course / e-book</option>
+  <option value="5">E-Content Module</option>
+  <option value="2">E-Content Contribution</option>
+  <option value="10">Editor of E-Content</option>
+
+</select>
+
+<input type="number" id="ictCount" placeholder="Count (e.g., number of courses)">
+
+<button onclick="addICT()">Add ICT Activity</button>
+
+<table id="ictTable">
+  <tr>
+    <th>#</th>
+    <th>Activity</th>
+    <th>Count</th>
+    <th>Score</th>
+  </tr>
+</table>
+
+<div class="total">
+  ICT Score: <span id="ictTotal">0.00</span>
+</div>
+  
 <!-- ================= FINAL TOTAL ================= -->
 
 <h3>Total API Score: <span id="finalTotal">0.00</span></h3>
