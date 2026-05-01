@@ -8,9 +8,7 @@
       padding: 20px;
       background: #f5f7fa;
     }
-    h2 {
-      color: #2c3e50;
-    }
+    h2 { color: #2c3e50; }
     input, select, button {
       padding: 8px;
       margin: 5px;
@@ -22,9 +20,7 @@
       color: white;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #34495e;
-    }
+    button:hover { background-color: #34495e; }
     table {
       border-collapse: collapse;
       margin-top: 20px;
@@ -44,11 +40,6 @@
       margin-top: 10px;
       font-weight: bold;
     }
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-      color: gray;
-    }
   </style>
 </head>
 
@@ -57,7 +48,6 @@
 <h2>API Score Calculator</h2>
 
 <!-- ================= PUBLICATIONS ================= -->
-
 <h3>Journal Publications</h3>
 
 <input type="number" id="if" step="0.1" placeholder="Impact Factor">
@@ -67,172 +57,131 @@
   <option value="Coauthor">Coauthor</option>
 </select>
 
-<button onclick="addPublication()">Add Publication</button>
+<button onclick="addPublication()">Add</button>
 
 <table id="pubTable">
-  <tr>
-    <th>#</th>
-    <th>IF</th>
-    <th>Author</th>
-    <th>Score</th>
-  </tr>
+<tr><th>#</th><th>IF</th><th>Author</th><th>Score</th></tr>
 </table>
 
-<div class="total">
-  Publication Score: <span id="pubTotal">0.00</span>
-</div>
+<div class="total">Publication Score: <span id="pubTotal">0</span></div>
 
 <hr>
 
 <!-- ================= BOOKS ================= -->
-
-<h3>Books / Chapters / Translation</h3>
+<h3>Books / Chapters</h3>
 
 <select id="bookType">
-  <option value="">Select Activity</option>
-  <option value="12">Book – International Publisher</option>
-  <option value="10">Book – National Publisher</option>
-  <option value="5">Chapter in Edited Book</option>
-  <option value="10">Editor – International Publisher</option>
-  <option value="8">Editor – National Publisher</option>
-  <option value="3">Translation – Chapter/Paper</option>
-  <option value="8">Translation – Book</option>
+  <option value="12">Book – International</option>
+  <option value="10">Book – National</option>
+  <option value="5">Chapter</option>
 </select>
 
-<button onclick="addBook()">Add Entry</button>
+<button onclick="addBook()">Add</button>
 
 <table id="bookTable">
-  <tr>
-    <th>#</th>
-    <th>Activity</th>
-    <th>Score</th>
-  </tr>
+<tr><th>#</th><th>Type</th><th>Score</th></tr>
 </table>
 
-<div class="total">
-  Books Score: <span id="bookTotal">0.00</span>
-</div>
+<div class="total">Book Score: <span id="bookTotal">0</span></div>
 
 <hr>
 
 <!-- ================= ICT ================= -->
-
-<h3>ICT / MOOCs / E-Content / Curriculum</h3>
+<h3>ICT / Curriculum</h3>
 
 <select id="ictType">
-  <option value="">Select Activity</option>
-
-  <option value="5">Innovative Pedagogy</option>
-  <option value="2">Curriculum Design (per course)</option>
-
-  <option value="20">MOOC Full Course (4 credit)</option>
-  <option value="5">MOOC Module</option>
-  <option value="2">MOOC Content Expert</option>
-  <option value="8">MOOC Course Coordinator</option>
-
-  <option value="12">E-Content Full Course / e-book</option>
-  <option value="5">E-Content Module</option>
-  <option value="2">E-Content Contribution</option>
-  <option value="10">Editor of E-Content</option>
+  <option value="5">Innovative Teaching</option>
+  <option value="2">Curriculum Design</option>
 </select>
 
 <input type="number" id="ictCount" placeholder="Count">
 
-<button onclick="addICT()">Add ICT Activity</button>
+<button onclick="addICT()">Add</button>
 
 <table id="ictTable">
-  <tr>
-    <th>#</th>
-    <th>Activity</th>
-    <th>Count</th>
-    <th>Score</th>
-  </tr>
+<tr><th>#</th><th>Activity</th><th>Count</th><th>Score</th></tr>
 </table>
 
-<div class="total">
-  ICT Score: <span id="ictTotal">0.00</span>
-</div>
+<div class="total">ICT Score: <span id="ictTotal">0</span></div>
 
 <hr>
 
 <!-- ================= RESEARCH ================= -->
-
-<h3>Research Guidance / Projects / Consultancy</h3>
+<h3>Research / Projects</h3>
 
 <select id="resType">
-  <option value="">Select Activity</option>
-
   <option value="10">PhD Awarded</option>
   <option value="5">PhD Submitted</option>
-  <option value="2">MPhil / PG Dissertation</option>
-
-  <option value="10">Project Completed (>10 Lakhs)</option>
-  <option value="5">Project Completed (<10 Lakhs)</option>
-
-  <option value="5">Project Ongoing (>10 Lakhs)</option>
-  <option value="2">Project Ongoing (<10 Lakhs)</option>
-
-  <option value="3">Consultancy</option>
+  <option value="2">PG Dissertation</option>
 </select>
 
-<input type="number" id="resCount" placeholder="Count">
+<input type="number" id="resCount">
 
-<button onclick="addResearch()">Add Entry</button>
+<button onclick="addResearch()">Add</button>
 
 <table id="resTable">
-  <tr>
-    <th>#</th>
-    <th>Activity</th>
-    <th>Count</th>
-    <th>Score</th>
-  </tr>
+<tr><th>#</th><th>Type</th><th>Count</th><th>Score</th></tr>
 </table>
 
-<div class="total">
-  Research Score: <span id="resTotal">0.00</span>
-</div>
+<div class="total">Research Score: <span id="resTotal">0</span></div>
 
 <hr>
 
-<!-- ================= FINAL ================= -->
+<!-- ================= NEW SECTION ================= -->
+<h3>Patents / Policy / Awards / Invited Talks</h3>
 
-<h3>Total API Score: <span id="finalTotal">0.00</span></h3>
+<select id="otherType">
+  <!-- Patents -->
+  <option value="10">Patent – International</option>
+  <option value="7">Patent – National</option>
 
-<div class="footer">
-  Thank you for using..by Rajnikant
-</div>
+  <!-- Policy -->
+  <option value="10">Policy – International</option>
+  <option value="7">Policy – National</option>
+  <option value="4">Policy – State</option>
+
+  <!-- Awards -->
+  <option value="7">Award – International</option>
+  <option value="5">Award – National</option>
+
+  <!-- Invited -->
+  <option value="7">Invited Talk – International Abroad</option>
+  <option value="5">Invited Talk – International India</option>
+  <option value="3">Invited Talk – National</option>
+  <option value="2">Invited Talk – State</option>
+</select>
+
+<input type="number" id="otherCount" placeholder="Count">
+
+<button onclick="addOther()">Add</button>
+
+<table id="otherTable">
+<tr><th>#</th><th>Category</th><th>Count</th><th>Score</th></tr>
+</table>
+
+<div class="total">Other Score: <span id="otherTotal">0</span></div>
+
+<hr>
+
+<h3>Total API Score: <span id="finalTotal">0</span></h3>
 
 <script>
 
 // ===== PUBLICATIONS =====
-
-let pubTotal = 0;
-let pubCount = 0;
+let pubTotal = 0, pubCount = 0;
 
 function getImpactScore(IF) {
-  if (IF === 0) return 5;
   if (IF < 1) return 10;
   if (IF < 2) return 15;
   if (IF < 5) return 20;
-  if (IF < 10) return 25;
-  return 30;
+  return 25;
 }
 
 function addPublication() {
   let IF = parseFloat(document.getElementById("if").value);
   let author = document.getElementById("author").value;
 
-  if (isNaN(IF)) {
-    alert("Enter Impact Factor");
-    return;
-  }
-
-  let base = 8;
-  let impact = getImpactScore(IF);
-  let raw = base + impact;
-
-  let weight = (author === "Corresponding") ? 0.7 : 0.3;
-  let score = raw * weight;
+  let score = (8 + getImpactScore(IF)) * (author === "Corresponding" ? 0.7 : 0.3);
 
   pubTotal += score;
   pubCount++;
@@ -247,99 +196,91 @@ function addPublication() {
   updateTotal();
 }
 
-// ===== BOOKS =====
-
-let bookTotal = 0;
-let bookCount = 0;
+// ===== BOOK =====
+let bookTotal = 0, bookCount = 0;
 
 function addBook() {
   let select = document.getElementById("bookType");
   let score = parseFloat(select.value);
-  let text = select.options[select.selectedIndex].text;
-
-  if (!score) {
-    alert("Select activity");
-    return;
-  }
 
   bookTotal += score;
   bookCount++;
 
   let row = document.getElementById("bookTable").insertRow();
   row.insertCell(0).innerText = bookCount;
-  row.insertCell(1).innerText = text;
+  row.insertCell(1).innerText = select.options[select.selectedIndex].text;
   row.insertCell(2).innerText = score;
 
-  document.getElementById("bookTotal").innerText = bookTotal.toFixed(2);
+  document.getElementById("bookTotal").innerText = bookTotal;
   updateTotal();
 }
 
 // ===== ICT =====
-
-let ictTotal = 0;
-let ictCountNum = 0;
+let ictTotal = 0, ictCountNum = 0;
 
 function addICT() {
-  let select = document.getElementById("ictType");
-  let baseScore = parseFloat(select.value);
-  let text = select.options[select.selectedIndex].text;
+  let base = parseFloat(document.getElementById("ictType").value);
   let count = parseInt(document.getElementById("ictCount").value);
 
-  if (!baseScore || isNaN(count)) {
-    alert("Select activity and enter count");
-    return;
-  }
-
-  let score = baseScore * count;
-
+  let score = base * count;
   ictTotal += score;
   ictCountNum++;
 
   let row = document.getElementById("ictTable").insertRow();
   row.insertCell(0).innerText = ictCountNum;
-  row.insertCell(1).innerText = text;
+  row.insertCell(1).innerText = document.getElementById("ictType").selectedOptions[0].text;
   row.insertCell(2).innerText = count;
   row.insertCell(3).innerText = score;
 
-  document.getElementById("ictTotal").innerText = ictTotal.toFixed(2);
+  document.getElementById("ictTotal").innerText = ictTotal;
   updateTotal();
 }
 
 // ===== RESEARCH =====
-
-let resTotal = 0;
-let resCountNum = 0;
+let resTotal = 0, resCountNum = 0;
 
 function addResearch() {
-  let select = document.getElementById("resType");
-  let baseScore = parseFloat(select.value);
-  let text = select.options[select.selectedIndex].text;
+  let base = parseFloat(document.getElementById("resType").value);
   let count = parseInt(document.getElementById("resCount").value);
 
-  if (!baseScore || isNaN(count)) {
-    alert("Select activity and enter count");
-    return;
-  }
-
-  let score = baseScore * count;
-
+  let score = base * count;
   resTotal += score;
   resCountNum++;
 
   let row = document.getElementById("resTable").insertRow();
   row.insertCell(0).innerText = resCountNum;
-  row.insertCell(1).innerText = text;
+  row.insertCell(1).innerText = document.getElementById("resType").selectedOptions[0].text;
   row.insertCell(2).innerText = count;
   row.insertCell(3).innerText = score;
 
-  document.getElementById("resTotal").innerText = resTotal.toFixed(2);
+  document.getElementById("resTotal").innerText = resTotal;
+  updateTotal();
+}
+
+// ===== OTHER (NEW) =====
+let otherTotal = 0, otherCountNum = 0;
+
+function addOther() {
+  let base = parseFloat(document.getElementById("otherType").value);
+  let count = parseInt(document.getElementById("otherCount").value);
+
+  let score = base * count;
+  otherTotal += score;
+  otherCountNum++;
+
+  let row = document.getElementById("otherTable").insertRow();
+  row.insertCell(0).innerText = otherCountNum;
+  row.insertCell(1).innerText = document.getElementById("otherType").selectedOptions[0].text;
+  row.insertCell(2).innerText = count;
+  row.insertCell(3).innerText = score;
+
+  document.getElementById("otherTotal").innerText = otherTotal;
   updateTotal();
 }
 
 // ===== TOTAL =====
-
 function updateTotal() {
-  let final = pubTotal + bookTotal + ictTotal + resTotal;
+  let final = pubTotal + bookTotal + ictTotal + resTotal + otherTotal;
   document.getElementById("finalTotal").innerText = final.toFixed(2);
 }
 
