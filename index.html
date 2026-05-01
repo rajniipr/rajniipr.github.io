@@ -84,7 +84,7 @@
 
 <hr>
 
-<!-- ================= BOOKS / CHAPTERS ================= -->
+<!-- ================= BOOKS ================= -->
 
 <h3>Books / Chapters / Translation</h3>
 
@@ -115,7 +115,7 @@
 
 <hr>
 
-<hr>
+<!-- ================= ICT ================= -->
 
 <h3>ICT / MOOCs / E-Content / Curriculum</h3>
 
@@ -123,7 +123,6 @@
   <option value="">Select Activity</option>
 
   <option value="5">Innovative Pedagogy</option>
-
   <option value="2">Curriculum Design (per course)</option>
 
   <option value="20">MOOC Full Course (4 credit)</option>
@@ -135,10 +134,9 @@
   <option value="5">E-Content Module</option>
   <option value="2">E-Content Contribution</option>
   <option value="10">Editor of E-Content</option>
-
 </select>
 
-<input type="number" id="ictCount" placeholder="Count (e.g., number of courses)">
+<input type="number" id="ictCount" placeholder="Count">
 
 <button onclick="addICT()">Add ICT Activity</button>
 
@@ -154,8 +152,10 @@
 <div class="total">
   ICT Score: <span id="ictTotal">0.00</span>
 </div>
-  
-<!-- ================= FINAL TOTAL ================= -->
+
+<hr>
+
+<!-- ================= FINAL ================= -->
 
 <h3>Total API Score: <span id="finalTotal">0.00</span></h3>
 
@@ -165,7 +165,7 @@
 
 <script>
 
-// ===== PUBLICATION LOGIC =====
+// ===== PUBLICATIONS =====
 
 let pubTotal = 0;
 let pubCount = 0;
@@ -198,20 +198,17 @@ function addPublication() {
   pubTotal += score;
   pubCount++;
 
-  let table = document.getElementById("pubTable");
-  let row = table.insertRow();
-
+  let row = document.getElementById("pubTable").insertRow();
   row.insertCell(0).innerText = pubCount;
   row.insertCell(1).innerText = IF;
   row.insertCell(2).innerText = author;
   row.insertCell(3).innerText = score.toFixed(2);
 
   document.getElementById("pubTotal").innerText = pubTotal.toFixed(2);
-
   updateTotal();
 }
 
-// ===== BOOK LOGIC =====
+// ===== BOOKS =====
 
 let bookTotal = 0;
 let bookCount = 0;
@@ -229,22 +226,50 @@ function addBook() {
   bookTotal += score;
   bookCount++;
 
-  let table = document.getElementById("bookTable");
-  let row = table.insertRow();
-
+  let row = document.getElementById("bookTable").insertRow();
   row.insertCell(0).innerText = bookCount;
   row.insertCell(1).innerText = text;
   row.insertCell(2).innerText = score;
 
   document.getElementById("bookTotal").innerText = bookTotal.toFixed(2);
-
   updateTotal();
 }
 
-// ===== FINAL TOTAL =====
+// ===== ICT =====
+
+let ictTotal = 0;
+let ictCountNum = 0;
+
+function addICT() {
+  let select = document.getElementById("ictType");
+  let baseScore = parseFloat(select.value);
+  let text = select.options[select.selectedIndex].text;
+  let count = parseInt(document.getElementById("ictCount").value);
+
+  if (!baseScore || isNaN(count)) {
+    alert("Select activity and enter count");
+    return;
+  }
+
+  let score = baseScore * count;
+
+  ictTotal += score;
+  ictCountNum++;
+
+  let row = document.getElementById("ictTable").insertRow();
+  row.insertCell(0).innerText = ictCountNum;
+  row.insertCell(1).innerText = text;
+  row.insertCell(2).innerText = count;
+  row.insertCell(3).innerText = score;
+
+  document.getElementById("ictTotal").innerText = ictTotal.toFixed(2);
+  updateTotal();
+}
+
+// ===== TOTAL =====
 
 function updateTotal() {
-  let final = pubTotal + bookTotal;
+  let final = pubTotal + bookTotal + ictTotal;
   document.getElementById("finalTotal").innerText = final.toFixed(2);
 }
 
