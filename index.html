@@ -276,4 +276,246 @@ function updateTotal() {
 </script>
 
 </body>
+</html>      text-align: center;
+    }
+    th {
+      background-color: #2c3e50;
+      color: white;
+    }
+    .total {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: gray;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>API Score Calculator</h2>
+
+<!-- ================= PUBLICATIONS ================= -->
+
+<h3>Journal Publications</h3>
+
+<input type="number" id="if" step="0.1" placeholder="Impact Factor">
+
+<select id="author">
+  <option value="Corresponding">Corresponding</option>
+  <option value="Coauthor">Coauthor</option>
+</select>
+
+<button onclick="addPublication()">Add Publication</button>
+
+<table id="pubTable">
+  <tr>
+    <th>#</th>
+    <th>IF</th>
+    <th>Author</th>
+    <th>Score</th>
+  </tr>
+</table>
+
+<div class="total">
+  Publication Score: <span id="pubTotal">0.00</span>
+</div>
+
+<hr>
+
+<!-- ================= BOOKS ================= -->
+
+<h3>Books / Chapters / Translation</h3>
+
+<select id="bookType">
+  <option value="">Select Activity</option>
+  <option value="12">Book – International Publisher</option>
+  <option value="10">Book – National Publisher</option>
+  <option value="5">Chapter in Edited Book</option>
+  <option value="10">Editor – International Publisher</option>
+  <option value="8">Editor – National Publisher</option>
+  <option value="3">Translation – Chapter/Paper</option>
+  <option value="8">Translation – Book</option>
+</select>
+
+<button onclick="addBook()">Add Entry</button>
+
+<table id="bookTable">
+  <tr>
+    <th>#</th>
+    <th>Activity</th>
+    <th>Score</th>
+  </tr>
+</table>
+
+<div class="total">
+  Books Score: <span id="bookTotal">0.00</span>
+</div>
+
+<hr>
+
+<!-- ================= ICT ================= -->
+
+<h3>ICT / MOOCs / E-Content / Curriculum</h3>
+
+<select id="ictType">
+  <option value="">Select Activity</option>
+
+  <option value="5">Innovative Pedagogy</option>
+  <option value="2">Curriculum Design (per course)</option>
+
+  <option value="20">MOOC Full Course (4 credit)</option>
+  <option value="5">MOOC Module</option>
+  <option value="2">MOOC Content Expert</option>
+  <option value="8">MOOC Course Coordinator</option>
+
+  <option value="12">E-Content Full Course / e-book</option>
+  <option value="5">E-Content Module</option>
+  <option value="2">E-Content Contribution</option>
+  <option value="10">Editor of E-Content</option>
+</select>
+
+<input type="number" id="ictCount" placeholder="Count">
+
+<button onclick="addICT()">Add ICT Activity</button>
+
+<table id="ictTable">
+  <tr>
+    <th>#</th>
+    <th>Activity</th>
+    <th>Count</th>
+    <th>Score</th>
+  </tr>
+</table>
+
+<div class="total">
+  ICT Score: <span id="ictTotal">0.00</span>
+</div>
+
+<hr>
+
+<!-- ================= FINAL ================= -->
+
+<h3>Total API Score: <span id="finalTotal">0.00</span></h3>
+
+<div class="footer">
+  Thank you for using..by Rajnikant
+</div>
+
+<script>
+
+// ===== PUBLICATIONS =====
+
+let pubTotal = 0;
+let pubCount = 0;
+
+function getImpactScore(IF) {
+  if (IF === 0) return 5;
+  if (IF < 1) return 10;
+  if (IF < 2) return 15;
+  if (IF < 5) return 20;
+  if (IF < 10) return 25;
+  return 30;
+}
+
+function addPublication() {
+  let IF = parseFloat(document.getElementById("if").value);
+  let author = document.getElementById("author").value;
+
+  if (isNaN(IF)) {
+    alert("Enter Impact Factor");
+    return;
+  }
+
+  let base = 8;
+  let impact = getImpactScore(IF);
+  let raw = base + impact;
+
+  let weight = (author === "Corresponding") ? 0.7 : 0.3;
+  let score = raw * weight;
+
+  pubTotal += score;
+  pubCount++;
+
+  let row = document.getElementById("pubTable").insertRow();
+  row.insertCell(0).innerText = pubCount;
+  row.insertCell(1).innerText = IF;
+  row.insertCell(2).innerText = author;
+  row.insertCell(3).innerText = score.toFixed(2);
+
+  document.getElementById("pubTotal").innerText = pubTotal.toFixed(2);
+  updateTotal();
+}
+
+// ===== BOOKS =====
+
+let bookTotal = 0;
+let bookCount = 0;
+
+function addBook() {
+  let select = document.getElementById("bookType");
+  let score = parseFloat(select.value);
+  let text = select.options[select.selectedIndex].text;
+
+  if (!score) {
+    alert("Select activity");
+    return;
+  }
+
+  bookTotal += score;
+  bookCount++;
+
+  let row = document.getElementById("bookTable").insertRow();
+  row.insertCell(0).innerText = bookCount;
+  row.insertCell(1).innerText = text;
+  row.insertCell(2).innerText = score;
+
+  document.getElementById("bookTotal").innerText = bookTotal.toFixed(2);
+  updateTotal();
+}
+
+// ===== ICT =====
+
+let ictTotal = 0;
+let ictCountNum = 0;
+
+function addICT() {
+  let select = document.getElementById("ictType");
+  let baseScore = parseFloat(select.value);
+  let text = select.options[select.selectedIndex].text;
+  let count = parseInt(document.getElementById("ictCount").value);
+
+  if (!baseScore || isNaN(count)) {
+    alert("Select activity and enter count");
+    return;
+  }
+
+  let score = baseScore * count;
+
+  ictTotal += score;
+  ictCountNum++;
+
+  let row = document.getElementById("ictTable").insertRow();
+  row.insertCell(0).innerText = ictCountNum;
+  row.insertCell(1).innerText = text;
+  row.insertCell(2).innerText = count;
+  row.insertCell(3).innerText = score;
+
+  document.getElementById("ictTotal").innerText = ictTotal.toFixed(2);
+  updateTotal();
+}
+
+// ===== TOTAL =====
+
+function updateTotal() {
+  let final = pubTotal + bookTotal + ictTotal;
+  document.getElementById("finalTotal").innerText = final.toFixed(2);
+}
+
+</script>
+
+</body>
 </html>
