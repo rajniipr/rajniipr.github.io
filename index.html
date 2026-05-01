@@ -2,39 +2,347 @@
 <html>
 <head>
   <title>API Score Calculator</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
       background: #f5f7fa;
     }
-    h2 { color: #2c3e50; }
+
+    h2 {
+      color: #2c3e50;
+    }
+
     input, select, button {
       padding: 8px;
       margin: 5px;
       border-radius: 5px;
       border: 1px solid #ccc;
     }
+
     button {
       background-color: #2c3e50;
       color: white;
       cursor: pointer;
     }
-    button:hover { background-color: #34495e; }
+
+    button:hover {
+      background-color: #34495e;
+    }
+
     table {
       border-collapse: collapse;
       margin-top: 20px;
       width: 100%;
       background: white;
     }
+
     th, td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
     }
+
     th {
       background-color: #2c3e50;
       color: white;
+    }
+
+    .total {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: gray;
+      font-size: 14px;
+    }
+
+    .atom {
+      width: 60px;
+      opacity: 0.7;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<h2>API Score Calculator</h2>
+
+<!-- ================= PUBLICATIONS ================= -->
+
+<h3>Journal Publications</h3>
+
+<input type="number" id="if" step="0.1" placeholder="Impact Factor">
+
+<select id="author">
+  <option value="Corresponding">Corresponding</option>
+  <option value="Coauthor">Coauthor</option>
+</select>
+
+<button onclick="addPublication()">Add</button>
+
+<table id="pubTable">
+<tr><th>#</th><th>IF</th><th>Author</th><th>Score</th></tr>
+</table>
+
+<div class="total">Publication Score: <span id="pubTotal">0</span></div>
+
+<hr>
+
+<!-- ================= BOOKS ================= -->
+
+<h3>Books / Chapters</h3>
+
+<select id="bookType">
+  <option value="12">Book – International</option>
+  <option value="10">Book – National</option>
+  <option value="5">Chapter</option>
+</select>
+
+<button onclick="addBook()">Add</button>
+
+<table id="bookTable">
+<tr><th>#</th><th>Type</th><th>Score</th></tr>
+</table>
+
+<div class="total">Book Score: <span id="bookTotal">0</span></div>
+
+<hr>
+
+<!-- ================= ICT ================= -->
+
+<h3>ICT / Curriculum</h3>
+
+<select id="ictType">
+  <option value="5">Innovative Teaching</option>
+  <option value="2">Curriculum Design</option>
+</select>
+
+<input type="number" id="ictCount" placeholder="Count">
+
+<button onclick="addICT()">Add</button>
+
+<table id="ictTable">
+<tr><th>#</th><th>Activity</th><th>Count</th><th>Score</th></tr>
+</table>
+
+<div class="total">ICT Score: <span id="ictTotal">0</span></div>
+
+<hr>
+
+<!-- ================= RESEARCH ================= -->
+
+<h3>Research / Projects</h3>
+
+<select id="resType">
+  <option value="10">PhD Awarded</option>
+  <option value="5">PhD Submitted</option>
+  <option value="2">PG Dissertation</option>
+</select>
+
+<input type="number" id="resCount" placeholder="Count">
+
+<button onclick="addResearch()">Add</button>
+
+<table id="resTable">
+<tr><th>#</th><th>Type</th><th>Count</th><th>Score</th></tr>
+</table>
+
+<div class="total">Research Score: <span id="resTotal">0</span></div>
+
+<hr>
+
+<!-- ================= OTHER ================= -->
+
+<h3>Patents / Policy / Awards / Invited Talks</h3>
+
+<select id="otherType">
+  <option value="10">Patent – International</option>
+  <option value="7">Patent – National</option>
+
+  <option value="10">Policy – International</option>
+  <option value="7">Policy – National</option>
+  <option value="4">Policy – State</option>
+
+  <option value="7">Award – International</option>
+  <option value="5">Award – National</option>
+
+  <option value="7">Invited Talk – International Abroad</option>
+  <option value="5">Invited Talk – International India</option>
+  <option value="3">Invited Talk – National</option>
+  <option value="2">Invited Talk – State</option>
+</select>
+
+<input type="number" id="otherCount" placeholder="Count">
+
+<button onclick="addOther()">Add</button>
+
+<table id="otherTable">
+<tr><th>#</th><th>Category</th><th>Count</th><th>Score</th></tr>
+</table>
+
+<div class="total">Other Score: <span id="otherTotal">0</span></div>
+
+<hr>
+
+<h3>Total API Score: <span id="finalTotal">0</span></h3>
+
+<!-- ================= FOOTER ================= -->
+
+<div class="footer">
+  Academic API Score Calculator | Developed by Rajnikant Makwana
+  <br>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Nuclear_shell_model.svg/120px-Nuclear_shell_model.svg.png" 
+       alt="Atomic Nucleus" class="atom">
+</div>
+
+<script>
+
+// ===== PUBLICATIONS =====
+
+let pubTotal = 0, pubCount = 0;
+
+function getImpactScore(IF) {
+  if (IF < 1) return 10;
+  if (IF < 2) return 15;
+  if (IF < 5) return 20;
+  return 25;
+}
+
+function addPublication() {
+  let IF = parseFloat(document.getElementById("if").value);
+  let author = document.getElementById("author").value;
+
+  if (isNaN(IF)) return alert("Enter Impact Factor");
+
+  let score = (8 + getImpactScore(IF)) * (author === "Corresponding" ? 0.7 : 0.3);
+
+  pubTotal += score;
+  pubCount++;
+
+  let row = pubTable.insertRow();
+  row.insertCell(0).innerText = pubCount;
+  row.insertCell(1).innerText = IF;
+  row.insertCell(2).innerText = author;
+  row.insertCell(3).innerText = score.toFixed(2);
+
+  pubTotalDisplay();
+}
+
+function pubTotalDisplay(){
+  document.getElementById("pubTotal").innerText = pubTotal.toFixed(2);
+  updateTotal();
+}
+
+// ===== BOOK =====
+
+let bookTotal = 0, bookCount = 0;
+
+function addBook() {
+  let s = bookType;
+  let score = parseFloat(s.value);
+
+  bookTotal += score;
+  bookCount++;
+
+  let row = bookTable.insertRow();
+  row.insertCell(0).innerText = bookCount;
+  row.insertCell(1).innerText = s.options[s.selectedIndex].text;
+  row.insertCell(2).innerText = score;
+
+  document.getElementById("bookTotal").innerText = bookTotal;
+  updateTotal();
+}
+
+// ===== ICT =====
+
+let ictTotal = 0, ictCountNum = 0;
+
+function addICT() {
+  let base = parseFloat(ictType.value);
+  let count = parseInt(ictCount.value);
+
+  if (isNaN(count)) return alert("Enter count");
+
+  let score = base * count;
+  ictTotal += score;
+  ictCountNum++;
+
+  let row = ictTable.insertRow();
+  row.insertCell(0).innerText = ictCountNum;
+  row.insertCell(1).innerText = ictType.options[ictType.selectedIndex].text;
+  row.insertCell(2).innerText = count;
+  row.insertCell(3).innerText = score;
+
+  document.getElementById("ictTotal").innerText = ictTotal;
+  updateTotal();
+}
+
+// ===== RESEARCH =====
+
+let resTotal = 0, resCountNum = 0;
+
+function addResearch() {
+  let base = parseFloat(resType.value);
+  let count = parseInt(resCount.value);
+
+  if (isNaN(count)) return alert("Enter count");
+
+  let score = base * count;
+  resTotal += score;
+  resCountNum++;
+
+  let row = resTable.insertRow();
+  row.insertCell(0).innerText = resCountNum;
+  row.insertCell(1).innerText = resType.options[resType.selectedIndex].text;
+  row.insertCell(2).innerText = count;
+  row.insertCell(3).innerText = score;
+
+  document.getElementById("resTotal").innerText = resTotal;
+  updateTotal();
+}
+
+// ===== OTHER =====
+
+let otherTotal = 0, otherCountNum = 0;
+
+function addOther() {
+  let base = parseFloat(otherType.value);
+  let count = parseInt(otherCount.value);
+
+  if (isNaN(count)) return alert("Enter count");
+
+  let score = base * count;
+  otherTotal += score;
+  otherCountNum++;
+
+  let row = otherTable.insertRow();
+  row.insertCell(0).innerText = otherCountNum;
+  row.insertCell(1).innerText = otherType.options[otherType.selectedIndex].text;
+  row.insertCell(2).innerText = count;
+  row.insertCell(3).innerText = score;
+
+  document.getElementById("otherTotal").innerText = otherTotal;
+  updateTotal();
+}
+
+// ===== TOTAL =====
+
+function updateTotal() {
+  let final = pubTotal + bookTotal + ictTotal + resTotal + otherTotal;
+  document.getElementById("finalTotal").innerText = final.toFixed(2);
+}
+
+</script>
+
+</body>
+</html>      color: white;
     }
     .total {
       margin-top: 10px;
