@@ -41,55 +41,94 @@
       color: white;
     }
     .total {
-      margin-top: 20px;
-      font-size: 18px;
+      margin-top: 10px;
       font-weight: bold;
     }
     .footer {
       margin-top: 40px;
       text-align: center;
       color: gray;
-      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
 
-<h2>Publication API Score Calculator</h2>
+<h2>API Score Calculator</h2>
 
-<label>Impact Factor:</label>
-<input type="number" id="if" step="0.1" placeholder="Enter IF">
+<!-- ================= PUBLICATIONS ================= -->
 
-<label>Author Type:</label>
+<h3>Journal Publications</h3>
+
+<input type="number" id="if" step="0.1" placeholder="Impact Factor">
+
 <select id="author">
   <option value="Corresponding">Corresponding</option>
   <option value="Coauthor">Coauthor</option>
 </select>
 
-<button onclick="calculate()">Add Publication</button>
-<button onclick="resetAll()">Reset</button>
+<button onclick="addPublication()">Add Publication</button>
 
-<table id="table">
+<table id="pubTable">
   <tr>
     <th>#</th>
-    <th>Impact Factor</th>
+    <th>IF</th>
     <th>Author</th>
     <th>Score</th>
   </tr>
 </table>
 
 <div class="total">
-  Total API Score: <span id="total">0.00</span>
+  Publication Score: <span id="pubTotal">0.00</span>
 </div>
+
+<hr>
+
+<!-- ================= BOOKS / CHAPTERS ================= -->
+
+<h3>Books / Chapters / Translation</h3>
+
+<select id="bookType">
+  <option value="">Select Activity</option>
+  <option value="12">Book – International Publisher</option>
+  <option value="10">Book – National Publisher</option>
+  <option value="5">Chapter in Edited Book</option>
+  <option value="10">Editor – International Publisher</option>
+  <option value="8">Editor – National Publisher</option>
+  <option value="3">Translation – Chapter/Paper</option>
+  <option value="8">Translation – Book</option>
+</select>
+
+<button onclick="addBook()">Add Entry</button>
+
+<table id="bookTable">
+  <tr>
+    <th>#</th>
+    <th>Activity</th>
+    <th>Score</th>
+  </tr>
+</table>
+
+<div class="total">
+  Books Score: <span id="bookTotal">0.00</span>
+</div>
+
+<hr>
+
+<!-- ================= FINAL TOTAL ================= -->
+
+<h3>Total API Score: <span id="finalTotal">0.00</span></h3>
 
 <div class="footer">
   Thank you for using..by Rajnikant
 </div>
 
 <script>
-let total = 0;
-let count = 0;
+
+// ===== PUBLICATION LOGIC =====
+
+let pubTotal = 0;
+let pubCount = 0;
 
 function getImpactScore(IF) {
   if (IF === 0) return 5;
@@ -100,12 +139,12 @@ function getImpactScore(IF) {
   return 30;
 }
 
-function calculate() {
+function addPublication() {
   let IF = parseFloat(document.getElementById("if").value);
   let author = document.getElementById("author").value;
 
   if (isNaN(IF)) {
-    alert("Please enter a valid Impact Factor");
+    alert("Enter Impact Factor");
     return;
   }
 
@@ -114,40 +153,61 @@ function calculate() {
   let raw = base + impact;
 
   let weight = (author === "Corresponding") ? 0.7 : 0.3;
-  let finalScore = raw * weight;
+  let score = raw * weight;
 
-  total += finalScore;
-  count++;
+  pubTotal += score;
+  pubCount++;
 
-  let table = document.getElementById("table");
+  let table = document.getElementById("pubTable");
   let row = table.insertRow();
 
-  row.insertCell(0).innerText = count;
+  row.insertCell(0).innerText = pubCount;
   row.insertCell(1).innerText = IF;
   row.insertCell(2).innerText = author;
-  row.insertCell(3).innerText = finalScore.toFixed(2);
+  row.insertCell(3).innerText = score.toFixed(2);
 
-  document.getElementById("total").innerText = total.toFixed(2);
+  document.getElementById("pubTotal").innerText = pubTotal.toFixed(2);
 
-  document.getElementById("if").value = "";
+  updateTotal();
 }
 
-function resetAll() {
-  total = 0;
-  count = 0;
+// ===== BOOK LOGIC =====
 
-  let table = document.getElementById("table");
-  table.innerHTML = `
-    <tr>
-      <th>#</th>
-      <th>Impact Factor</th>
-      <th>Author</th>
-      <th>Score</th>
-    </tr>
-  `;
+let bookTotal = 0;
+let bookCount = 0;
 
-  document.getElementById("total").innerText = "0.00";
+function addBook() {
+  let select = document.getElementById("bookType");
+  let score = parseFloat(select.value);
+  let text = select.options[select.selectedIndex].text;
+
+  if (!score) {
+    alert("Select activity");
+    return;
+  }
+
+  bookTotal += score;
+  bookCount++;
+
+  let table = document.getElementById("bookTable");
+  let row = table.insertRow();
+
+  row.insertCell(0).innerText = bookCount;
+  row.insertCell(1).innerText = text;
+  row.insertCell(2).innerText = score;
+
+  document.getElementById("bookTotal").innerText = bookTotal.toFixed(2);
+
+  updateTotal();
 }
+
+// ===== FINAL TOTAL =====
+
+function updateTotal() {
+  let final = pubTotal + bookTotal;
+  document.getElementById("finalTotal").innerText = final.toFixed(2);
+}
+
 </script>
 
 </body>
