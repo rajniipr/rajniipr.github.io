@@ -1,9 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>API Test</title>
+  <title>API Calculator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #1e1e2f;
+      color: white;
+    }
+
+    input, select, button {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+      background: #2c2c3e;
+    }
+
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #444;
+    }
+
+    .total {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body style="background:#1e1e2f; color:white; font-family:Arial; padding:20px;">
+
+<body>
 
 <h2>Journal Publications</h2>
 
@@ -11,57 +57,24 @@
 
 <select id="author">
   <option value="Single">Single Author</option>
-  <option value="Corresponding">Corresponding</option>
+  <option value="Corresponding">Corresponding / First Author</option>
   <option value="Coauthor">Coauthor</option>
 </select>
 
 <button onclick="addPublication()">Add</button>
 
-<table border="1" style="margin-top:10px; width:100%;">
-<tr><th>#</th><th>IF</th><th>Type</th><th>Score</th></tr>
+<table id="pubTable">
+<tr>
+  <th>#</th>
+  <th>IF</th>
+  <th>Author Type</th>
+  <th>Score</th>
+</tr>
 </table>
 
-<p>Total: <span id="total">0</span></p>
-
-<script>
-let count = 0;
-let total = 0;
-
-function slab(IF){
-  if(IF==0) return 5;
-  if(IF<1) return 10;
-  if(IF<2) return 15;
-  if(IF<5) return 20;
-  if(IF<10) return 25;
-  return 30;
-}
-
-function addPublication(){
-  let IF = parseFloat(document.getElementById("if").value);
-  let type = document.getElementById("author").value;
-
-  let base = 8 + slab(IF);
-
-  let score = base;
-  if(type==="Corresponding") score = base*0.7;
-  if(type==="Coauthor") score = base*0.3;
-
-  let table = document.querySelector("table");
-  let row = table.insertRow();
-
-  count++;
-  row.insertCell(0).innerHTML = count;
-  row.insertCell(1).innerHTML = IF;
-  row.insertCell(2).innerHTML = type;
-  row.insertCell(3).innerHTML = score.toFixed(2);
-
-  total += score;
-  document.getElementById("total").innerText = total.toFixed(2);
-}
+<div class="total">Publication Score: <span id="pubTotal">0.00</span></div>
 
 <hr>
-
-<!-- ================= BOOKS ================= -->
 
 <h3>Books / Chapters</h3>
 
@@ -80,8 +93,6 @@ function addPublication(){
 <div class="total">Book Score: <span id="bookTotal">0.00</span></div>
 
 <hr>
-
-<!-- ================= ICT ================= -->
 
 <h3>ICT / Curriculum</h3>
 
@@ -102,27 +113,17 @@ function addPublication(){
 
 <hr>
 
-<!-- ================= RESEARCH ================= -->
-
 <h3>Research / Projects</h3>
 
 <select id="resType">
   <option value="">Select Activity</option>
-
-  <!-- Research Guidance -->
   <option value="10">PhD Awarded</option>
   <option value="5">PhD Submitted</option>
   <option value="2">MPhil / PG Dissertation</option>
-
-  <!-- Projects Completed -->
   <option value="10">Project Completed (>10 Lakhs)</option>
   <option value="5">Project Completed (<10 Lakhs)</option>
-
-  <!-- Projects Ongoing -->
   <option value="5">Project Ongoing (>10 Lakhs)</option>
   <option value="2">Project Ongoing (<10 Lakhs)</option>
-
-  <!-- Consultancy -->
   <option value="3">Consultancy</option>
 </select>
 
@@ -131,39 +132,23 @@ function addPublication(){
 <button onclick="addResearch()">Add</button>
 
 <table id="resTable">
-<tr>
-  <th>#</th>
-  <th>Activity</th>
-  <th>Count</th>
-  <th>Score</th>
-</tr>
+<tr><th>#</th><th>Activity</th><th>Count</th><th>Score</th></tr>
 </table>
 
-<div class="total">
-  Research Score: <span id="resTotal">0.00</span>
-</div>
+<div class="total">Research Score: <span id="resTotal">0.00</span></div>
 
 <hr>
 
-<!-- ================= OTHER ================= -->
-
-<h3>Patents / Policy / Awards / Invited Talks</h3>
+<h3>Other (Patents / Awards / Talks)</h3>
 
 <select id="otherType">
   <option value="10">Patent – International</option>
   <option value="7">Patent – National</option>
-
-  <option value="10">Policy – International</option>
-  <option value="7">Policy – National</option>
-  <option value="4">Policy – State</option>
-
   <option value="7">Award – International</option>
   <option value="5">Award – National</option>
-
   <option value="7">Invited Talk – International Abroad</option>
   <option value="5">Invited Talk – International India</option>
   <option value="3">Invited Talk – National</option>
-  <option value="2">Invited Talk – State</option>
 </select>
 
 <input type="number" id="otherCount" placeholder="Count">
@@ -180,48 +165,42 @@ function addPublication(){
 
 <h3>Total API Score: <span id="finalTotal">0.00</span></h3>
 
-<!-- ================= FOOTER ================= -->
-
-<div class="footer">
-  Academic API Score Calculator | Developed by Rajnikant Makwana
-  <br>
-  <img src="atom.png" alt="Atomic Nucleus" class="atom">
-</div>
-
 <script>
 
 // ===== GLOBAL TOTALS =====
-let pubTotal = 0;
-let bookTotal = 0;
-let ictTotal = 0;
-let resTotal = 0;
-let otherTotal = 0;
+let pubTotal = 0, bookTotal = 0, ictTotal = 0, resTotal = 0, otherTotal = 0;
 
 // ===== PUBLICATIONS =====
 let pubCount = 0;
 
-function getImpactScore(IF) {
-  if (IF < 1) return 10;
-  if (IF < 2) return 15;
-  if (IF < 5) return 20;
-  return 25;
+function slab(IF){
+  if(IF === 0) return 5;
+  if(IF < 1) return 10;
+  if(IF < 2) return 15;
+  if(IF < 5) return 20;
+  if(IF < 10) return 25;
+  return 30;
 }
 
-function addPublication() {
+function addPublication(){
   let IF = parseFloat(document.getElementById("if").value);
-  let author = document.getElementById("author").value;
+  let type = document.getElementById("author").value;
 
   if (isNaN(IF)) return alert("Enter Impact Factor");
 
-  let score = (8 + getImpactScore(IF)) * (author === "Corresponding" ? 0.7 : 0.3);
+  let base = 8 + slab(IF);
+
+  let score = base;
+  if(type === "Corresponding") score = base * 0.7;
+  if(type === "Coauthor") score = base * 0.3;
 
   pubTotal += score;
   pubCount++;
 
   let row = document.getElementById("pubTable").insertRow();
   row.insertCell(0).innerText = pubCount;
-  row.insertCell(1).innerText = IF;
-  row.insertCell(2).innerText = author;
+  row.insertCell(1).innerText = IF.toFixed(2);
+  row.insertCell(2).innerText = type;
   row.insertCell(3).innerText = score.toFixed(2);
 
   document.getElementById("pubTotal").innerText = pubTotal.toFixed(2);
@@ -231,7 +210,7 @@ function addPublication() {
 // ===== BOOKS =====
 let bookCount = 0;
 
-function addBook() {
+function addBook(){
   let select = document.getElementById("bookType");
   let score = parseFloat(select.value);
 
@@ -250,7 +229,7 @@ function addBook() {
 // ===== ICT =====
 let ictCountNum = 0;
 
-function addICT() {
+function addICT(){
   let base = parseFloat(document.getElementById("ictType").value);
   let count = parseInt(document.getElementById("ictCount").value);
 
@@ -273,7 +252,7 @@ function addICT() {
 // ===== RESEARCH =====
 let resCountNum = 0;
 
-function addResearch() {
+function addResearch(){
   let base = parseFloat(document.getElementById("resType").value);
   let count = parseInt(document.getElementById("resCount").value);
 
@@ -296,7 +275,7 @@ function addResearch() {
 // ===== OTHER =====
 let otherCountNum = 0;
 
-function addOther() {
+function addOther(){
   let base = parseFloat(document.getElementById("otherType").value);
   let count = parseInt(document.getElementById("otherCount").value);
 
@@ -316,8 +295,8 @@ function addOther() {
   updateTotal();
 }
 
-// ===== TOTAL =====
-function updateTotal() {
+// ===== FINAL TOTAL =====
+function updateTotal(){
   let final = pubTotal + bookTotal + ictTotal + resTotal + otherTotal;
   document.getElementById("finalTotal").innerText = final.toFixed(2);
 }
@@ -325,5 +304,4 @@ function updateTotal() {
 </script>
 
 </body>
-</html><!DOCTYPE html>
-
+</html>
