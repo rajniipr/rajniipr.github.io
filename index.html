@@ -138,9 +138,23 @@
 <h3>Research / Projects</h3>
 
 <select id="resType">
+  <option value="">Select Activity</option>
+
+  <!-- Research Guidance -->
   <option value="10">PhD Awarded</option>
   <option value="5">PhD Submitted</option>
-  <option value="2">PG Dissertation</option>
+  <option value="2">MPhil / PG Dissertation</option>
+
+  <!-- Projects Completed -->
+  <option value="10">Project Completed (>10 Lakhs)</option>
+  <option value="5">Project Completed (<10 Lakhs)</option>
+
+  <!-- Projects Ongoing -->
+  <option value="5">Project Ongoing (>10 Lakhs)</option>
+  <option value="2">Project Ongoing (<10 Lakhs)</option>
+
+  <!-- Consultancy -->
+  <option value="3">Consultancy</option>
 </select>
 
 <input type="number" id="resCount" placeholder="Count">
@@ -148,10 +162,17 @@
 <button onclick="addResearch()">Add</button>
 
 <table id="resTable">
-<tr><th>#</th><th>Type</th><th>Count</th><th>Score</th></tr>
+<tr>
+  <th>#</th>
+  <th>Activity</th>
+  <th>Count</th>
+  <th>Score</th>
+</tr>
 </table>
 
-<div class="total">Research Score: <span id="resTotal">0.00</span></div>
+<div class="total">
+  Research Score: <span id="resTotal">0.00</span>
+</div>
 
 <hr>
 
